@@ -4,13 +4,12 @@
 #include <string.h>
 #include <time.h>
 
-// #define SEQUENTIAL
 // #define DEBUG
 
 // Tesla V100: 84 SMs, each with 64 INT32 cores
-#define NUM_BLOCKS 84
-#define NUM_THREADS 64
-#define OFFSET_STEP ((NUM_BLOCKS) * (NUM_THREADS))
+// #define NUM_BLOCKS 84
+// #define NUM_THREADS 64
+// #define OFFSET_STEP ((NUM_BLOCKS) * (NUM_THREADS))
 
 /* Size of each field in input in bytes */
 #define TIME_SIZE 4
@@ -47,12 +46,12 @@ __device__ void construct_input(uint8_t __restrict__ input[52], uint64_t* __rest
     memcpy((uint8_t*)input + cur, nonce, NONCE_SIZE);
 }
 
-__global__ void find_hash()
+__global__ void find_hash(int num_threads)
 {
     int prev_is_found;
     uint8_t input[52], hash[32];
     uint64_t to_compare;
-    uint64_t nonce = offset + blockIdx.x * NUM_THREADS + threadIdx.x;
+    uint64_t nonce = offset + blockIdx.x * num_threads + threadIdx.x;
     if (is_found) {
         return;
     }
@@ -93,9 +92,18 @@ void print_digest(uint8_t __restrict__ digest[DIGEST_SIZE])
 
 int main(int argc, char** argv)
 {
+    int num_blocks, num_threads;
     char prev_hash[65]; // SHA-256 is 64 chars long
     uint64_t target_local;
     uint32_t cur_time_local = time(NULL);
+
+    if (argc != 3) {
+        printf("Usage:\n%s num_blocks num_threads\n", argv[0]);
+        return 1;
+    }
+
+    num_blocks = atoi(argv[1]);
+    num_threads = atoi(argv[2]);
 
     scanf("%s", prev_hash);
     scanf("%lu", &target_local);
@@ -114,14 +122,9 @@ int main(int argc, char** argv)
 #ifdef DEBUG
         printf("Trying offset %lu\n", offset);
 #endif
-#ifdef SEQUENTIAL
-        find_hash<<<1, 1>>>();
-        offset++;
-#else
-        find_hash<<<NUM_BLOCKS, NUM_THREADS>>>();
-        offset += OFFSET_STEP;
-#endif
+        find_hash<<<num_blocks, num_threads>>>(num_threads);
         cudaDeviceSynchronize();
+        offset += num_blocks * num_threads;
     }
 
     puts(NUSNET_ID);
