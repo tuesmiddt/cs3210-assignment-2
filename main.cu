@@ -25,16 +25,45 @@ __managed__ int is_found = 0;
 
 /* FOR CONSTRUCTING INPUT */
 #define NUSNET_ID "E0014691"
-__constant__ uint32_t cur_time;
+__constant__ uint32_t cur_time_be;
 __constant__ uint8_t digest[DIGEST_SIZE];
 __constant__ char nusnet_id[NUSNET_ID_SIZE + 1] = NUSNET_ID;
 __constant__ uint64_t target; // target value is 64 bit
 
-__device__ void construct_input(uint8_t __restrict__ input[52], uint64_t* __restrict__ nonce)
+/* Converts from little endian to big endian */
+__device__ uint64_t letobe64(uint64_t le)
+{
+    uint64_t result;
+    uint8_t buffer[8], dest_buffer[8];
+    int i;
+    memcpy(buffer, &le, sizeof(uint64_t));
+    for (i = 0; i < 8; i++) {
+        dest_buffer[i] = buffer[7 - i];
+    }
+    memcpy(&result, dest_buffer, sizeof(uint64_t));
+    return result;
+}
+
+uint32_t letobe32(uint32_t le)
+{
+    uint32_t result;
+    uint8_t buffer[4], dest_buffer[4];
+    int i;
+    memcpy(buffer, &le, sizeof(uint32_t));
+    for (i = 0; i < 4; i++) {
+        dest_buffer[i] = buffer[3 - i];
+    }
+    memcpy(&result, dest_buffer, sizeof(uint32_t));
+    return result;
+}
+
+__device__ void construct_input(uint8_t __restrict__ input[52], uint64_t nonce)
 {
     size_t cur = 0;
+    uint64_t nonce_be = letobe64(nonce);
+
     // Fill in the timestamp
-    memcpy(input, &cur_time, TIME_SIZE);
+    memcpy(input, &cur_time_be, TIME_SIZE);
     cur += TIME_SIZE;
     // Fill in previous digest
     memcpy((uint8_t*)input + cur, digest, DIGEST_SIZE);
@@ -43,7 +72,7 @@ __device__ void construct_input(uint8_t __restrict__ input[52], uint64_t* __rest
     memcpy((uint8_t*)input + cur, nusnet_id, NUSNET_ID_SIZE);
     cur += NUSNET_ID_SIZE;
     // Fill in nonce
-    memcpy((uint8_t*)input + cur, nonce, NONCE_SIZE);
+    memcpy((uint8_t*)input + cur, &nonce_be, NONCE_SIZE);
 }
 
 __global__ void find_hash(int num_threads)
@@ -55,7 +84,7 @@ __global__ void find_hash(int num_threads)
     if (is_found) {
         return;
     }
-    construct_input(input, &nonce);
+    construct_input(input, nonce);
     sha256(hash, input, 52);
     memcpy(&to_compare, hash, sizeof(uint64_t));
     if (to_compare < target) {
@@ -85,7 +114,7 @@ void print_digest(uint8_t __restrict__ digest[DIGEST_SIZE])
 {
     int i;
     for (i = 0; i < DIGEST_SIZE; i++) {
-        printf("%x", digest[i]);
+        printf("%02x", digest[i]);
     }
     printf("\n");
 }
@@ -94,8 +123,10 @@ int main(int argc, char** argv)
 {
     int num_blocks, num_threads;
     char prev_hash[65]; // SHA-256 is 64 chars long
+    uint8_t digest_local[DIGEST_SIZE];
     uint64_t target_local;
     uint32_t cur_time_local = time(NULL);
+    uint32_t cur_time_local_be = letobe32(cur_time_local);
 
     if (argc != 3) {
         printf("Usage:\n%s num_blocks num_threads\n", argv[0]);
@@ -107,10 +138,11 @@ int main(int argc, char** argv)
 
     scanf("%s", prev_hash);
     scanf("%lu", &target_local);
-    process_digest(prev_hash, digest);
+    process_digest(prev_hash, digest_local);
 
-    cudaMemcpyToSymbol(cur_time, &cur_time_local, sizeof(uint32_t));
+    cudaMemcpyToSymbol(cur_time_be, &cur_time_local_be, sizeof(uint32_t));
     cudaMemcpyToSymbol(target, &target_local, sizeof(uint64_t));
+    cudaMemcpyToSymbol(digest, &digest_local, DIGEST_SIZE * sizeof(uint8_t));
 
 #ifdef DEBUG
     puts("Input:");
