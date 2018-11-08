@@ -33,4 +33,5 @@ else
   puts "Correct digest: #{correct_digest}"
   puts "Given digest: #{digest}"
 end
+puts stdout
 puts stderr
