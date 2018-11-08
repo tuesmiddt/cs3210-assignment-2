@@ -3,10 +3,10 @@ appname := 0123HomeWork
 defs :=
 
 CC := nvcc
-CFLAGS := -g -Wall ${defs}
+CFLAGS := -arch sm_30 -g -Wall ${defs}
 
 CXX := nvcc
-LDFLAGS :=
+LDFLAGS := -arch sm_30
 
 srcfiles := $(shell find . -name "*.cu")
 objects  := $(patsubst %.c, %.o, $(srcfiles))
@@ -14,7 +14,7 @@ objects  := $(patsubst %.c, %.o, $(srcfiles))
 all: $(appname)
 
 $(appname): $(objects)
-	$(CXX) $(LDFLAGS) -o $(appname) $(objects) ${LDFLAGS}
+	$(CXX) $(LDFLAGS) -o $(appname) $(objects)
 
 clean:
 	rm -f $(objects)
