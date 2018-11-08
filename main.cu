@@ -18,7 +18,6 @@
 #define NONCE_SIZE 8
 
 /* STATES */
-__managed__ uint64_t offset = 0;
 __managed__ uint64_t nonce_found;
 __managed__ uint8_t result[DIGEST_SIZE];
 __managed__ int is_found = 0;
@@ -75,7 +74,7 @@ __device__ void construct_input(uint8_t __restrict__ input[52], uint64_t nonce)
     memcpy((uint8_t*)input + cur, &nonce_be, NONCE_SIZE);
 }
 
-__global__ void find_hash(int num_threads)
+__global__ void find_hash(uint64_t offset, int num_threads)
 {
     int prev_is_found;
     uint8_t input[52], hash[32];
@@ -123,10 +122,11 @@ int main(int argc, char** argv)
 {
     int num_blocks, num_threads;
     char prev_hash[65]; // SHA-256 is 64 chars long
-    uint8_t digest_local[DIGEST_SIZE];
     uint64_t target_local;
+    uint8_t digest_local[DIGEST_SIZE];
     uint32_t cur_time_local = time(NULL);
     uint32_t cur_time_local_be = letobe32(cur_time_local);
+    uint64_t offset = 0;
 
     if (argc != 3) {
         printf("Usage:\n%s num_blocks num_threads\n", argv[0]);
@@ -154,8 +154,8 @@ int main(int argc, char** argv)
 #ifdef DEBUG
         printf("Trying offset %lu\n", offset);
 #endif
-        find_hash<<<num_blocks, num_threads>>>(num_threads);
-        cudaDeviceSynchronize();
+        find_hash<<<num_blocks, num_threads>>>(offset, num_threads);
+        // cudaDeviceSynchronize();
         offset += num_blocks * num_threads;
     }
 
