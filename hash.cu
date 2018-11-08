@@ -1,7 +1,6 @@
 /**
  * SHA-256 Implementation in CUDA
  */
-#include <stdint.h>
 #include <stdio.h>
 #include <string.h>
 
