@@ -52,42 +52,31 @@ __device__ void construct_input(uint8_t __restrict__ input[52], uint64_t nonce)
     memcpy((uint8_t*)input + cur, &nonce_be, NONCE_SIZE);
 }
 
-__device__ void update_input(uint8_t __restrict__ input[52], uint64_t nonce)
-{
-    size_t cur = TIME_SIZE + DIGEST_SIZE + NUSNET_ID_SIZE;
-    uint64_t nonce_be = BSWAP64(nonce);
-    memcpy((uint8_t*)input + cur, &nonce_be, NONCE_SIZE);
-}
-
-__global__ void find_hash(int num_blocks, int num_threads)
+__global__ void find_hash(uint64_t offset, int num_threads)
 {
     int prev_is_found;
     uint8_t input[52], hash[32];
     uint64_t to_compare;
-    uint64_t increment = num_blocks * num_threads;
-    uint64_t nonce = blockIdx.x * num_threads + threadIdx.x;
-
+    uint64_t nonce = offset + blockIdx.x * num_threads + threadIdx.x;
+    if (is_found) {
+        return;
+    }
     construct_input(input, nonce);
-
-    while (!is_found) {
-        sha256(hash, input, 52);
-        memcpy(&to_compare, hash, sizeof(uint64_t));
-        if (to_compare < target) {
-            // Test-and-set to prevent race condition of multiple writes
-            prev_is_found = atomicExch(&is_found, 1);
-            if (!prev_is_found) {
+    sha256(hash, input, 52);
+    memcpy(&to_compare, hash, sizeof(uint64_t));
+    if (to_compare < target) {
+        // Test-and-set to prevent race condition of multiple writes
+        prev_is_found = atomicExch(&is_found, 1);
+        if (!prev_is_found) {
 #ifdef DEBUG
-                for (int i = 0; i < 52; i++) {
-                    printf("%x, ", input[i]);
-                }
-                printf("\n");
-#endif
-                nonce_found = nonce;
-                memcpy(result, hash, DIGEST_SIZE);
+            for (int i = 0; i < 52; i++) {
+                printf("%x, ", input[i]);
             }
+            printf("\n");
+#endif
+            nonce_found = nonce;
+            memcpy(result, hash, DIGEST_SIZE);
         }
-        nonce += increment;
-        update_input(input, nonce);
     }
 }
 
@@ -145,10 +134,13 @@ int main(int argc, char** argv)
     printf("%lu\n", target_local);
 #endif
 
+    while (!is_found) {
 #ifdef VERBOSE
-    printf("Trying offset %lu\n", offset);
+        printf("Trying offset %lu\n", offset);
 #endif
-    find_hash<<<num_blocks, num_threads>>>(num_blocks, num_threads);
+        find_hash<<<num_blocks, num_threads>>>(offset, num_threads);
+        offset += num_blocks * num_threads;
+    }
     cudaDeviceSynchronize();
 
     puts(NUSNET_ID);
