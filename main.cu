@@ -32,27 +32,25 @@ __constant__ uint64_t target; // target value is 64 bit
 /* Converts from little endian to big endian */
 __device__ uint64_t letobe64(uint64_t le)
 {
-    uint64_t result;
-    uint8_t buffer[8], dest_buffer[8];
     int i;
-    memcpy(buffer, &le, sizeof(uint64_t));
+    uint64_t result;
+    uint8_t* src = (uint8_t*)&le;
+    uint8_t* dst = (uint8_t*)&result;
     for (i = 0; i < 8; i++) {
-        dest_buffer[i] = buffer[7 - i];
+        dst[i] = src[7 - i];
     }
-    memcpy(&result, dest_buffer, sizeof(uint64_t));
     return result;
 }
 
 uint32_t letobe32(uint32_t le)
 {
-    uint32_t result;
-    uint8_t buffer[4], dest_buffer[4];
     int i;
-    memcpy(buffer, &le, sizeof(uint32_t));
+    uint32_t result;
+    uint8_t* src = (uint8_t*)&le;
+    uint8_t* dst = (uint8_t*)&result;
     for (i = 0; i < 4; i++) {
-        dest_buffer[i] = buffer[3 - i];
+        dst[i] = src[3 - i];
     }
-    memcpy(&result, dest_buffer, sizeof(uint32_t));
     return result;
 }
 
