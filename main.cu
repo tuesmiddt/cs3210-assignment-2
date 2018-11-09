@@ -25,7 +25,7 @@
 /* STATES */
 __managed__ uint64_t nonce_found;
 __managed__ uint8_t result[DIGEST_SIZE];
-__managed__ int is_found = 0;
+__managed__ volatile int is_found = 0;
 
 /* FOR CONSTRUCTING INPUT */
 #define NUSNET_ID "E0014691"
@@ -74,7 +74,7 @@ __global__ void find_hash(int num_blocks, int num_threads)
         memcpy(&to_compare, hash, sizeof(uint64_t));
         if (to_compare < target) {
             // Test-and-set to prevent race condition of multiple writes
-            prev_is_found = atomicExch(&is_found, 1);
+            prev_is_found = atomicExch((int*)&is_found, 1);
             if (!prev_is_found) {
 #ifdef DEBUG
                 for (int i = 0; i < 52; i++) {
