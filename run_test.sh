@@ -5,6 +5,8 @@ METRICS="inst_per_warp,branch_efficiency,warp_execution_efficiency,warp_nonpred_
 TIMESTAMP=$(date +%s)
 INPUT="input-hard"
 
+APP="./0123HomeWork"
+
 BLOCKS=( 1 2 4 8 16 32 64 80 )
 THREADS=( 1 2 4 8 16 32 64 128 256)
 
@@ -21,8 +23,8 @@ do
     for j in ${THREADS[@]};
     do
         echo "running for $i $j";
-        nvprof --unified-memory-profiling per-process-device --log-file $MEM_DIR/$i-$j.out  ./0123Homework $i $j < $INPUT
-        nvprof --events all --log-file $EVENTS_DIR/$i-$j.out  ./0123Homework $i $j < $INPUT
-        nvprof --metrics $METRICS --log-file $METRICS_DIR/$i-$j.out  ./0123Homework $i $j < $INPUT
+        nvprof --unified-memory-profiling per-process-device --log-file $MEM_DIR/$i-$j.out $APP $i $j < $INPUT
+        nvprof --events all --log-file $EVENTS_DIR/$i-$j.out $APP $i $j < $INPUT
+        nvprof --metrics $METRICS --log-file $METRICS_DIR/$i-$j.out $APP $i $j < $INPUT
     done;
 done
