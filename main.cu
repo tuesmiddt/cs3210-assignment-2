@@ -4,7 +4,12 @@
 #include <string.h>
 #include <time.h>
 
+/* Magical endian switching macros */
+#define BSWAP32(val) (((((val) >> 24) & 0xFF)) | ((((val) >> 16) & 0xFF) << 8) | ((((val) >> 8) & 0xFF) << 16) | (((val)&0xFF) << 24))
+#define BSWAP64(val) (((((val) >> 56) & 0xFF)) | ((((val) >> 48) & 0xFF) << 8) | ((((val) >> 40) & 0xFF) << 16) | ((((val) >> 32) & 0xFF) << 24) | ((((val) >> 24) & 0xFF) << 32) | ((((val) >> 16) & 0xFF) << 40) | ((((val) >> 8) & 0xFF) << 48) | ((((val)) & 0xFF) << 56))
+
 // #define DEBUG
+// #define VERBOSE
 
 // Tesla V100: 84 SMs, each with 64 INT32 cores
 // #define NUM_BLOCKS 84
@@ -29,35 +34,10 @@ __constant__ uint8_t digest[DIGEST_SIZE];
 __constant__ char nusnet_id[NUSNET_ID_SIZE + 1] = NUSNET_ID;
 __constant__ uint64_t target; // target value is 64 bit
 
-/* Converts from little endian to big endian */
-__device__ uint64_t letobe64(uint64_t le)
-{
-    int i;
-    uint64_t result;
-    uint8_t* src = (uint8_t*)&le;
-    uint8_t* dst = (uint8_t*)&result;
-    for (i = 0; i < 8; i++) {
-        dst[i] = src[7 - i];
-    }
-    return result;
-}
-
-uint32_t letobe32(uint32_t le)
-{
-    int i;
-    uint32_t result;
-    uint8_t* src = (uint8_t*)&le;
-    uint8_t* dst = (uint8_t*)&result;
-    for (i = 0; i < 4; i++) {
-        dst[i] = src[3 - i];
-    }
-    return result;
-}
-
 __device__ void construct_input(uint8_t __restrict__ input[52], uint64_t nonce)
 {
     size_t cur = 0;
-    uint64_t nonce_be = letobe64(nonce);
+    uint64_t nonce_be = BSWAP64(nonce);
 
     // Fill in the timestamp
     memcpy(input, &cur_time_be, TIME_SIZE);
@@ -88,6 +68,12 @@ __global__ void find_hash(uint64_t offset, int num_threads)
         // Test-and-set to prevent race condition of multiple writes
         prev_is_found = atomicExch(&is_found, 1);
         if (!prev_is_found) {
+#ifdef DEBUG
+            for (int i = 0; i < 52; i++) {
+                printf("%x, ", input[i]);
+            }
+            printf("\n");
+#endif
             nonce_found = nonce;
             memcpy(result, hash, DIGEST_SIZE);
         }
@@ -123,7 +109,7 @@ int main(int argc, char** argv)
     uint64_t target_local;
     uint8_t digest_local[DIGEST_SIZE];
     uint32_t cur_time_local = time(NULL);
-    uint32_t cur_time_local_be = letobe32(cur_time_local);
+    uint32_t cur_time_local_be = BSWAP32(cur_time_local);
     uint64_t offset = 0;
 
     if (argc != 3) {
@@ -149,13 +135,13 @@ int main(int argc, char** argv)
 #endif
 
     while (!is_found) {
-#ifdef DEBUG
+#ifdef VERBOSE
         printf("Trying offset %lu\n", offset);
 #endif
         find_hash<<<num_blocks, num_threads>>>(offset, num_threads);
-        // cudaDeviceSynchronize();
         offset += num_blocks * num_threads;
     }
+    cudaDeviceSynchronize();
 
     puts(NUSNET_ID);
     printf("%u\n", cur_time_local);
