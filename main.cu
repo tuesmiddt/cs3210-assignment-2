@@ -121,7 +121,6 @@ int main(int argc, char** argv)
     uint8_t digest_local[DIGEST_SIZE];
     uint32_t cur_time_local = time(NULL);
     uint32_t cur_time_local_be = BSWAP32(cur_time_local);
-    uint64_t offset = 0;
 
     if (argc != 3) {
         printf("Usage:\n%s num_blocks num_threads\n", argv[0]);
