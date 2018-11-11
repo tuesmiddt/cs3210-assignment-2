@@ -24,7 +24,7 @@ for i in ${BLOCKS[@]};
 do
     for j in ${THREADS[@]};
     do
-        for run in $(seq 1 5);
+        for run in $(seq 1 10);
         do
             echo "run number $run for $i $j";
             /usr/local/cuda/bin/nvprof --unified-memory-profiling per-process-device --log-file $MEM_DIR/$i-$j-$run.out $APP $i $j < $INPUT
