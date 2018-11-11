@@ -28,7 +28,7 @@ do
         do
             echo "run number $run for $i $j";
             /usr/local/cuda/bin/nvprof --unified-memory-profiling per-process-device --log-file $MEM_DIR/$i-$j-$run.out $APP $i $j < $INPUT
-            /usr/local/cuda/bin/nvprof --events $EVENTS --log-file $EVENTS_DIR/$i-$j$run.out $APP $i $j < $INPUT
+            /usr/local/cuda/bin/nvprof --events $EVENTS --log-file $EVENTS_DIR/$i-$j-$run.out $APP $i $j < $INPUT
             /usr/local/cuda/bin/nvprof --metrics $METRICS --log-file $METRICS_DIR/$i-$j-$run.out $APP $i $j < $INPUT
         done;
     done;
