@@ -16,8 +16,8 @@ def parse_metrics_file(f, metrics):
             print("overflowed in", f)
             return
         if "Warning" in line:
-            print(f)
-            print(line)
+            print("failed something", f)
+            return
 
     key = tuple(int(i) for i in filename_regex.findall(f)[0])
     entry = {}
@@ -58,6 +58,8 @@ def average_metrics_results(metrics):
 
 def parse_metrics_files():
     metrics = defaultdict(list)
+    csv_file = open("metrics.csv", "w")
+    writer = csv.writer(csv_file)
 
     for f in os.listdir("./metrics"):
         fn = "metrics/" + f
@@ -71,7 +73,17 @@ def parse_metrics_files():
 
     parsed_results = average_metrics_results(metrics)
 
-    return parsed_results
+    keys = list(parsed_results.values())[0].keys()
+    writer.writerow(["blocks", "threads"] + list(keys))
+
+    for k, v in parsed_results.items():
+        blocks, threads = k
+        row = [blocks, threads]
+        for e in keys:
+            row.append(v.get(e))
+
+        writer.writerow(row)
+    csv_file.close()
 
 
 def parse_timings_file(f, timings):
@@ -82,8 +94,8 @@ def parse_timings_file(f, timings):
             print("overflowed in", f)
             return
         if "Warning" in line:
-            print(f)
-            print(line)
+            print("failed something", f)
+            return
 
     key = tuple(int(i) for i in filename_regex.findall(f)[0])
 
@@ -114,13 +126,15 @@ def average_timings_results(timings):
     for run, results in timings.items():
         average_results = sum(results)/len(results)
 
-        parsed_timings[run] = {"total_time": average_results}
+        parsed_timings[run] = average_results
 
     return parsed_timings
 
 
 def parse_timings_files():
     timings = defaultdict(list)
+    csv_file = open("timings.csv", "w")
+    writer = csv.writer(csv_file)
 
     for f in os.listdir("./memory"):
         fn = "memory/" + f
@@ -134,7 +148,14 @@ def parse_timings_files():
 
     parsed_results = average_timings_results(timings)
 
-    return parsed_results
+    writer.writerow(["blocks", "threads", "time_ms"])
+
+    for k, timing in parsed_results.items():
+        blocks, threads = k
+        row = [blocks, threads, timing]
+
+        writer.writerow(row)
+    csv_file.close()
 
 
 def parse_event_file(f, events):
@@ -146,8 +167,8 @@ def parse_event_file(f, events):
             print("overflowed in", f)
             return
         if "Warning" in line:
-            print(f)
-            print(line)
+            print("failed something", f)
+            return
 
     key = tuple(int(i) for i in filename_regex.findall(f)[0])
 
@@ -187,6 +208,8 @@ def average_event_results(events):
 
 def parse_event_files():
     events = defaultdict(list)
+    csv_file = open("events.csv", "w")
+    writer = csv.writer(csv_file)
 
     for f in os.listdir("./events"):
         if f.endswith(".out"):
@@ -199,27 +222,12 @@ def parse_event_files():
 
     parsed_results = average_event_results(events)
 
-    return parsed_results
+    keys = list(parsed_results.values())[0].keys()
+    writer.writerow(["blocks", "threads"] + list(keys))
 
-
-def combine_results(*results):
-    if not results:
-        return
-
-    combined = defaultdict(dict)
-    runs = results[0].keys()
-
-    for run in runs:
-        for res in results:
-            combined[run].update(res[run])
-
-    csv_file = open("combined.csv", "w")
-    writer = csv.writer(csv_file)
-    keys = list(combined.values())[0].keys()
-    writer.writerow(["blocks", "threads", "blocks_times_threads"] + list(keys))
-    for k, v in combined.items():
+    for k, v in parsed_results.items():
         blocks, threads = k
-        row = [blocks, threads, blocks * threads]
+        row = [blocks, threads]
         for e in keys:
             row.append(v.get(e))
 
@@ -229,10 +237,8 @@ def combine_results(*results):
 
 if __name__ == "__main__":
     print("parsing metrics")
-    metrics = parse_metrics_files()
+    parse_metrics_files()
     print("parsing timings")
-    timings = parse_timings_files()
+    parse_timings_files()
     print("parsing events")
-    events = parse_event_files()
-    print("combining results")
-    combine_results(timings, metrics, events)
+    parse_event_files()
