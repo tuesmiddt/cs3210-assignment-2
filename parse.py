@@ -213,8 +213,18 @@ def combine_results(*results):
         for res in results:
             combined[run].update(res[run])
 
+    for res in combined.values():
+        res["l2_total_read_sector_queries"] = res["l2_subp0_total_read_sector_queries"] + res["l2_subp1_total_read_sector_queries"]
+        res["l2_total_write_sector_queries"] = res["l2_subp0_total_write_sector_queries"] + res["l2_subp1_total_write_sector_queries"]
+
+        res["l2_total_write_sector_misses"] = res["l2_subp0_write_sector_misses"] + res["l2_subp1_write_sector_misses"]
+        res["l2_total_read_sector_misses"] = res["l2_subp0_read_sector_misses"] + res["l2_subp1_read_sector_misses"]
+
+        res["l2_total_read_tex_hit_sectors"] = res["l2_subp0_read_tex_hit_sectors"] + res["l2_subp1_read_tex_hit_sectors"]
+        res["l2_total_write_tex_hit_sectors"] = res["l2_subp0_write_tex_hit_sectors"] + res["l2_subp1_write_tex_hit_sectors"]
+
     csv_file = open("combined.csv", "w")
-    writer = csv.writer(csv_file)
+    writer = csv.writer(csv_file, lineterminator="\n")
     keys = list(combined.values())[0].keys()
     writer.writerow(["blocks", "threads", "blocks_times_threads"] + list(keys))
     for k, v in combined.items():
