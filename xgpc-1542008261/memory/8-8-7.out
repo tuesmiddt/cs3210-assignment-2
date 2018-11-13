@@ -1,0 +1,23 @@
+==207758== NVPROF is profiling process 207758, command: ./0123HomeWork 8 8
+==207758== Profiling application: ./0123HomeWork 8 8
+==207758== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:   99.93%  5.1884ms         1  5.1884ms  5.1884ms  5.1884ms  find_hash(int, int)
+                    0.07%  3.4880us         3  1.1620us  1.1520us  1.1840us  [CUDA memcpy HtoD]
+      API calls:   98.52%  409.87ms         3  136.62ms  13.441us  409.84ms  cudaMemcpyToSymbol
+                    1.25%  5.1921ms         1  5.1921ms  5.1921ms  5.1921ms  cudaDeviceSynchronize
+                    0.13%  543.55us        86  6.3200us     210ns  249.16us  cuDeviceGetAttribute
+                    0.06%  244.95us         1  244.95us  244.95us  244.95us  cuDeviceTotalMem
+                    0.03%  113.90us         1  113.90us  113.90us  113.90us  cudaLaunch
+                    0.01%  51.967us         1  51.967us  51.967us  51.967us  cuDeviceGetName
+                    0.00%  4.5790us         2  2.2890us     563ns  4.0160us  cudaSetupArgument
+                    0.00%  4.4660us         3  1.4880us     311ns  3.7090us  cuDeviceGetCount
+                    0.00%  2.5870us         1  2.5870us  2.5870us  2.5870us  cudaConfigureCall
+                    0.00%  1.2180us         2     609ns     255ns     963ns  cuDeviceGet
+
+==207758== Unified Memory profiling result:
+Device "Tesla V100-PCIE-16GB (0)"
+   Count  Avg Size  Min Size  Max Size  Total Size  Total Time  Name
+       2  32.000KB  4.0000KB  60.000KB  64.00000KB  7.168000us  Device To Host
+       1         -         -         -           -  236.5760us  Gpu page fault groups
+Total CPU Page faults: 1

@@ -1,0 +1,21 @@
+==222473== NVPROF is profiling process 222473, command: ./0123HomeWork 2 32
+==222473== Some kernel(s) will be replayed on device 0 in order to collect all events/metrics.
+==222473== Profiling application: ./0123HomeWork 2 32
+==222473== Profiling result:
+==222473== Metric result:
+Invocations                               Metric Name                           Metric Description         Min         Max         Avg
+Device "Tesla V100-PCIE-16GB (0)"
+    Kernel: find_hash(int, int)
+          1                             inst_per_warp                        Instructions per warp  3.0098e+05  3.0098e+05  3.0098e+05
+          1                           global_hit_rate            Global Hit Rate in unified l1/tex      12.97%      12.97%      12.97%
+          1                            local_hit_rate                               Local Hit Rate      98.82%      98.82%      98.82%
+          1                        tex_cache_hit_rate                       Unified Cache Hit Rate      29.04%      29.04%      29.04%
+          1                      l2_tex_read_hit_rate                  L2 Hit Rate (Texture Reads)      99.56%      99.56%      99.56%
+          1                     l2_tex_write_hit_rate                 L2 Hit Rate (Texture Writes)     100.49%     100.49%     100.49%
+          1                            gld_efficiency                Global Memory Load Efficiency      12.20%      12.20%      12.20%
+          1                            gst_efficiency               Global Memory Store Efficiency       3.79%       3.79%       3.79%
+          1                          stall_inst_fetch     Issue Stall Reasons (Instructions Fetch)      17.97%      17.97%      17.97%
+          1                     stall_exec_dependency   Issue Stall Reasons (Execution Dependency)      61.92%      61.92%      61.92%
+          1                   stall_memory_dependency           Issue Stall Reasons (Data Request)      17.44%      17.44%      17.44%
+          1                                       ipc                                 Executed IPC    0.236541    0.236541    0.236541
+          1                             sm_efficiency                      Multiprocessor Activity       2.48%       2.48%       2.48%

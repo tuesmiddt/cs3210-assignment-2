@@ -1,0 +1,35 @@
+==201222== NVPROF is profiling process 201222, command: ./0123HomeWork 16 2
+==201222== Some kernel(s) will be replayed on device 0 in order to collect all events/metrics.
+==201222== Profiling application: ./0123HomeWork 16 2
+==201222== Profiling result:
+==201222== Event result:
+Invocations                                Event Name         Min         Max         Avg       Total
+Device "Tesla V100-PCIE-16GB (0)"
+    Kernel: find_hash(int, int)
+          1                     fb_subp0_read_sectors         237         237         237         237
+          1                     fb_subp1_read_sectors          99          99          99          99
+          1                    fb_subp0_write_sectors        2568        2568        2568        2568
+          1                    fb_subp1_write_sectors        2972        2972        2972        2972
+          1              l2_subp0_write_sector_misses        2427        2427        2427        2427
+          1              l2_subp1_write_sector_misses        2283        2283        2283        2283
+          1               l2_subp0_read_sector_misses         259         259         259         259
+          1               l2_subp1_read_sector_misses         242         242         242         242
+          1          l2_subp0_read_tex_sector_queries       23688       23688       23688       23688
+          1          l2_subp1_read_tex_sector_queries       29462       29462       29462       29462
+          1         l2_subp0_write_tex_sector_queries     1396448     1396448     1396448     1396448
+          1         l2_subp1_write_tex_sector_queries     1396881     1396881     1396881     1396881
+          1             l2_subp0_read_tex_hit_sectors       23103       23103       23103       23103
+          1             l2_subp1_read_tex_hit_sectors       29727       29727       29727       29727
+          1            l2_subp0_write_tex_hit_sectors     1407523     1407523     1407523     1407523
+          1            l2_subp1_write_tex_hit_sectors     1391075     1391075     1391075     1391075
+          1        l2_subp0_total_read_sector_queries       26613       26613       26613       26613
+          1        l2_subp1_total_read_sector_queries       32484       32484       32484       32484
+          1       l2_subp0_total_write_sector_queries     1416958     1416958     1416958     1416958
+          1       l2_subp1_total_write_sector_queries     1376352     1376352     1376352     1376352
+          1                         elapsed_cycles_sm   400454400   400454400   400454400   400454400
+          1                              generic_load      341796      341796      341796      341796
+          1                             generic_store     2234820     2234820     2234820     2234820
+          1                               global_load        6589        6589        6589        6589
+          1                              global_store          33          33          33          33
+          1                                local_load      843936      843936      843936      843936
+          1                               local_store      554644      554644      554644      554644
