@@ -1,0 +1,19 @@
+==24226== NVPROF is profiling process 24226, command: ./0123HomeWork 32 64
+==24226== Some kernel(s) will be replayed on device 0 in order to collect all events/metrics.
+==24226== Profiling application: ./0123HomeWork 32 64
+==24226== Profiling result:
+==24226== Metric result:
+Invocations                               Metric Name                           Metric Description         Min         Max         Avg
+Device "NVIDIA Tegra X2 (0)"
+    Kernel: find_hash(int, int)
+          1                             inst_per_warp                        Instructions per warp  2.5042e+04  2.5042e+04  2.5042e+04
+          1                           global_hit_rate            Global Hit Rate in unified l1/tex      75.00%      75.00%      75.00%
+          1                            local_hit_rate                               Local Hit Rate      50.00%      50.00%      50.00%
+          1                        tex_cache_hit_rate                       Unified Cache Hit Rate      50.31%      50.31%      50.31%
+          1                            gld_efficiency                Global Memory Load Efficiency      12.46%      12.46%      12.46%
+          1                            gst_efficiency               Global Memory Store Efficiency       3.79%       3.79%       3.79%
+          1                          stall_inst_fetch     Issue Stall Reasons (Instructions Fetch)       7.65%       7.65%       7.65%
+          1                     stall_exec_dependency   Issue Stall Reasons (Execution Dependency)      24.95%      24.95%      24.95%
+          1                   stall_memory_dependency           Issue Stall Reasons (Data Request)      50.34%      50.34%      50.34%
+          1                                       ipc                                 Executed IPC    1.561882    1.561882    1.561882
+          1                             sm_efficiency                      Multiprocessor Activity      99.69%      99.69%      99.69%

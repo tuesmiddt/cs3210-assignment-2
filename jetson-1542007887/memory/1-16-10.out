@@ -1,0 +1,17 @@
+==3542== NVPROF is profiling process 3542, command: ./0123HomeWork 1 16
+==3542== Warning: Unified Memory Profiling is not supported on the underlying platform. System requirements for unified memory can be found at: http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#um-requirements
+==3542== Profiling application: ./0123HomeWork 1 16
+==3542== Profiling result:
+            Type  Time(%)      Time     Calls       Avg       Min       Max  Name
+ GPU activities:  100.00%  410.09ms         1  410.09ms  410.09ms  410.09ms  find_hash(int, int)
+                    0.00%  1.5680us         3     522ns     480ns     544ns  [CUDA memcpy HtoD]
+      API calls:   66.64%  410.26ms         1  410.26ms  410.26ms  410.26ms  cudaDeviceSynchronize
+                   33.32%  205.11ms         3  68.369ms  19.008us  205.07ms  cudaMemcpyToSymbol
+                    0.02%  134.56us        94  1.4310us     896ns  24.256us  cuDeviceGetAttribute
+                    0.01%  65.152us         1  65.152us  65.152us  65.152us  cudaLaunch
+                    0.00%  9.5360us         1  9.5360us  9.5360us  9.5360us  cuDeviceTotalMem
+                    0.00%  7.8720us         3  2.6240us  1.6320us  4.2880us  cuDeviceGetCount
+                    0.00%  4.3840us         2  2.1920us     480ns  3.9040us  cudaSetupArgument
+                    0.00%  4.3520us         2  2.1760us  1.5040us  2.8480us  cuDeviceGet
+                    0.00%  2.8160us         1  2.8160us  2.8160us  2.8160us  cuDeviceGetName
+                    0.00%  1.7280us         1  1.7280us  1.7280us  1.7280us  cudaConfigureCall

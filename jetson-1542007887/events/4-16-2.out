@@ -1,0 +1,31 @@
+==31286== NVPROF is profiling process 31286, command: ./0123HomeWork 4 16
+==31286== Some kernel(s) will be replayed on device 0 in order to collect all events/metrics.
+==31286== Profiling application: ./0123HomeWork 4 16
+==31286== Profiling result:
+==31286== Event result:
+Invocations                                Event Name         Min         Max         Avg       Total
+Device "NVIDIA Tegra X2 (0)"
+    Kernel: find_hash(int, int)
+          1              l2_subp0_write_sector_misses          51          51          51          51
+          1              l2_subp1_write_sector_misses           4           4           4           4
+          1               l2_subp0_read_sector_misses       23490       23490       23490       23490
+          1               l2_subp1_read_sector_misses        1382        1382        1382        1382
+          1          l2_subp0_read_tex_sector_queries      146562      146562      146562      146562
+          1          l2_subp1_read_tex_sector_queries      138070      138070      138070      138070
+          1         l2_subp0_write_tex_sector_queries      273469      273469      273469      273469
+          1         l2_subp1_write_tex_sector_queries      211404      211404      211404      211404
+          1             l2_subp0_read_tex_hit_sectors      142886      142886      142886      142886
+          1             l2_subp1_read_tex_hit_sectors      141740      141740      141740      141740
+          1            l2_subp0_write_tex_hit_sectors      241035      241035      241035      241035
+          1            l2_subp1_write_tex_hit_sectors        2660        2660        2660        2660
+          1        l2_subp0_total_read_sector_queries      185645      185645      185645      185645
+          1        l2_subp1_total_read_sector_queries      124645      124645      124645      124645
+          1       l2_subp0_total_write_sector_queries      268709      268709      268709      268709
+          1       l2_subp1_total_write_sector_queries      215290      215290      215290      215290
+          1                         elapsed_cycles_sm    11050784    11050784    11050784    11050784
+          1                              generic_load       55640       55640       55640       55640
+          1                             generic_store       34240       34240       34240       34240
+          1                               global_load        1074        1074        1074        1074
+          1                              global_store          33          33          33          33
+          1                                local_load       68256       68256       68256       68256
+          1                               local_store      104616      104616      104616      104616

@@ -1,0 +1,31 @@
+==4530== NVPROF is profiling process 4530, command: ./0123HomeWork 1 1
+==4530== Some kernel(s) will be replayed on device 0 in order to collect all events/metrics.
+==4530== Profiling application: ./0123HomeWork 1 1
+==4530== Profiling result:
+==4530== Event result:
+Invocations                                Event Name         Min         Max         Avg       Total
+Device "NVIDIA Tegra X2 (0)"
+    Kernel: find_hash(int, int)
+          1              l2_subp0_write_sector_misses          50          50          50          50
+          1              l2_subp1_write_sector_misses           0           0           0           0
+          1               l2_subp0_read_sector_misses    15760631    15760631    15760631    15760631
+          1               l2_subp1_read_sector_misses           0           0           0           0
+          1          l2_subp0_read_tex_sector_queries    26840803    26840803    26840803    26840803
+          1          l2_subp1_read_tex_sector_queries    18686642    18686642    18686642    18686642
+          1         l2_subp0_write_tex_sector_queries    38052890    38052890    38052890    38052890
+          1         l2_subp1_write_tex_sector_queries    38732343    38732343    38732343    38732343
+          1             l2_subp0_read_tex_hit_sectors    21064887    21064887    21064887    21064887
+          1             l2_subp1_read_tex_hit_sectors    24122700    24122700    24122700    24122700
+          1            l2_subp0_write_tex_hit_sectors    44168451    44168451    44168451    44168451
+          1            l2_subp1_write_tex_hit_sectors    32616701    32616701    32616701    32616701
+          1        l2_subp0_total_read_sector_queries    36582590    36582590    36582590    36582590
+          1        l2_subp1_total_read_sector_queries    24462800    24462800    24462800    24462800
+          1       l2_subp0_total_write_sector_queries    38052916    38052916    38052916    38052916
+          1       l2_subp1_total_write_sector_queries    38732374    38732374    38732374    38732374
+          1                              generic_load    17667364    17667364    17667364    17667364
+          1                             generic_store    10872224    10872224    10872224    10872224
+          1                               global_load      339758      339758      339758      339758
+          1                              global_store          33          33          33          33
+          1                                local_load    21744480    21744480    21744480    21744480
+          1                               local_store    33296223    33296223    33296223    33296223
+==4530== Warning: One or more events or metrics overflowed. Rerun with "--print-gpu-trace" for detail.

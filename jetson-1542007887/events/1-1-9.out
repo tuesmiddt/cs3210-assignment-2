@@ -1,0 +1,31 @@
+==4506== NVPROF is profiling process 4506, command: ./0123HomeWork 1 1
+==4506== Some kernel(s) will be replayed on device 0 in order to collect all events/metrics.
+==4506== Profiling application: ./0123HomeWork 1 1
+==4506== Profiling result:
+==4506== Event result:
+Invocations                                Event Name         Min         Max         Avg       Total
+Device "NVIDIA Tegra X2 (0)"
+    Kernel: find_hash(int, int)
+          1              l2_subp0_write_sector_misses          53          53          53          53
+          1              l2_subp1_write_sector_misses           0           0           0           0
+          1               l2_subp0_read_sector_misses     1873175     1873175     1873175     1873175
+          1               l2_subp1_read_sector_misses           0           0           0           0
+          1          l2_subp0_read_tex_sector_queries     3128479     3128479     3128479     3128479
+          1          l2_subp1_read_tex_sector_queries     2178062     2178062     2178062     2178062
+          1         l2_subp0_write_tex_sector_queries     4435374     4435374     4435374     4435374
+          1         l2_subp1_write_tex_sector_queries     4514522     4514522     4514522     4514522
+          1             l2_subp0_read_tex_hit_sectors     2455215     2455215     2455215     2455215
+          1             l2_subp1_read_tex_hit_sectors     2811624     2811624     2811624     2811624
+          1            l2_subp0_write_tex_hit_sectors     5148171     5148171     5148171     5148171
+          1            l2_subp1_write_tex_hit_sectors     3801725     3801725     3801725     3801725
+          1        l2_subp0_total_read_sector_queries     4264007     4264007     4264007     4264007
+          1        l2_subp1_total_read_sector_queries     2851569     2851569     2851569     2851569
+          1       l2_subp0_total_write_sector_queries     4435394     4435394     4435394     4435394
+          1       l2_subp1_total_write_sector_queries     4514532     4514532     4514532     4514532
+          1                         elapsed_cycles_sm  1648833800  1648833800  1648833800  1648833800
+          1                              generic_load     2059252     2059252     2059252     2059252
+          1                             generic_store     1267232     1267232     1267232     1267232
+          1                               global_load       39602       39602       39602       39602
+          1                              global_store          33          33          33          33
+          1                                local_load     2534496     2534496     2534496     2534496
+          1                               local_store     3880935     3880935     3880935     3880935

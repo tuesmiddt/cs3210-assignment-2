@@ -1,0 +1,31 @@
+==3260== NVPROF is profiling process 3260, command: ./0123HomeWork 1 32
+==3260== Some kernel(s) will be replayed on device 0 in order to collect all events/metrics.
+==3260== Profiling application: ./0123HomeWork 1 32
+==3260== Profiling result:
+==3260== Event result:
+Invocations                                Event Name         Min         Max         Avg       Total
+Device "NVIDIA Tegra X2 (0)"
+    Kernel: find_hash(int, int)
+          1              l2_subp0_write_sector_misses          50          50          50          50
+          1              l2_subp1_write_sector_misses           0           0           0           0
+          1               l2_subp0_read_sector_misses      137760      137760      137760      137760
+          1               l2_subp1_read_sector_misses           0           0           0           0
+          1          l2_subp0_read_tex_sector_queries      560900      560900      560900      560900
+          1          l2_subp1_read_tex_sector_queries      385182      385182      385182      385182
+          1         l2_subp0_write_tex_sector_queries      795349      795349      795349      795349
+          1         l2_subp1_write_tex_sector_queries      809432      809432      809432      809432
+          1             l2_subp0_read_tex_hit_sectors      440206      440206      440206      440206
+          1             l2_subp1_read_tex_hit_sectors      504100      504100      504100      504100
+          1            l2_subp0_write_tex_hit_sectors      923065      923065      923065      923065
+          1            l2_subp1_write_tex_hit_sectors      681716      681716      681716      681716
+          1        l2_subp0_total_read_sector_queries      555566      555566      555566      555566
+          1        l2_subp1_total_read_sector_queries      506171      506171      506171      506171
+          1       l2_subp0_total_write_sector_queries      795367      795367      795367      795367
+          1       l2_subp1_total_write_sector_queries      809444      809444      809444      809444
+          1                         elapsed_cycles_sm    74346710    74346710    74346710    74346710
+          1                              generic_load       92300       92300       92300       92300
+          1                             generic_store       56800       56800       56800       56800
+          1                               global_load        1776        1776        1776        1776
+          1                              global_store          33          33          33          33
+          1                                local_load      113632      113632      113632      113632
+          1                               local_store      173987      173987      173987      173987

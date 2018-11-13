@@ -1,0 +1,19 @@
+==1646== NVPROF is profiling process 1646, command: ./0123HomeWork 2 4
+==1646== Some kernel(s) will be replayed on device 0 in order to collect all events/metrics.
+==1646== Profiling application: ./0123HomeWork 2 4
+==1646== Profiling result:
+==1646== Metric result:
+Invocations                               Metric Name                           Metric Description         Min         Max         Avg
+Device "NVIDIA Tegra X2 (0)"
+    Kernel: find_hash(int, int)
+          1                             inst_per_warp                        Instructions per warp  4.2202e+07  4.2202e+07  4.2202e+07
+          1                           global_hit_rate            Global Hit Rate in unified l1/tex       0.00%       0.00%       0.00%
+          1                            local_hit_rate                               Local Hit Rate       0.00%       0.00%       0.00%
+          1                            gld_efficiency                Global Memory Load Efficiency      12.45%      12.45%      12.45%
+          1                            gst_efficiency               Global Memory Store Efficiency       3.79%       3.79%       3.79%
+          1                          stall_inst_fetch     Issue Stall Reasons (Instructions Fetch)      16.82%      16.82%      16.82%
+          1                     stall_exec_dependency   Issue Stall Reasons (Execution Dependency)      27.26%      27.26%      27.26%
+          1                   stall_memory_dependency           Issue Stall Reasons (Data Request)      47.92%      47.92%      47.92%
+          1                                       ipc                                 Executed IPC    0.134150    0.134150    0.134150
+          1                             sm_efficiency                      Multiprocessor Activity     100.00%     100.00%     100.00%
+==1646== Warning: One or more events or metrics can't be profiled. Rerun with "--print-gpu-trace" for detail.

@@ -1,0 +1,19 @@
+==32321== NVPROF is profiling process 32321, command: ./0123HomeWork 4 1
+==32321== Some kernel(s) will be replayed on device 0 in order to collect all events/metrics.
+==32321== Profiling application: ./0123HomeWork 4 1
+==32321== Profiling result:
+==32321== Metric result:
+Invocations                               Metric Name                           Metric Description         Min         Max         Avg
+Device "NVIDIA Tegra X2 (0)"
+    Kernel: find_hash(int, int)
+          1                             inst_per_warp                        Instructions per warp  4.2843e+07  4.2843e+07  4.2843e+07
+          1                           global_hit_rate            Global Hit Rate in unified l1/tex       0.00%       0.00%       0.00%
+          1                            local_hit_rate                               Local Hit Rate       0.00%       0.00%       0.00%
+          1                            gld_efficiency                Global Memory Load Efficiency      12.47%      12.47%      12.47%
+          1                            gst_efficiency               Global Memory Store Efficiency       3.79%       3.79%       3.79%
+          1                          stall_inst_fetch     Issue Stall Reasons (Instructions Fetch)      13.91%      13.91%      13.91%
+          1                     stall_exec_dependency   Issue Stall Reasons (Execution Dependency)      28.25%      28.25%      28.25%
+          1                   stall_memory_dependency           Issue Stall Reasons (Data Request)      50.10%      50.10%      50.10%
+          1                                       ipc                                 Executed IPC    0.271624    0.271624    0.271624
+          1                             sm_efficiency                      Multiprocessor Activity     100.00%     100.00%     100.00%
+==32321== Warning: One or more events or metrics can't be profiled. Rerun with "--print-gpu-trace" for detail.

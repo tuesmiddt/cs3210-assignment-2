@@ -1,0 +1,31 @@
+==22382== NVPROF is profiling process 22382, command: ./0123HomeWork 64 32
+==22382== Some kernel(s) will be replayed on device 0 in order to collect all events/metrics.
+==22382== Profiling application: ./0123HomeWork 64 32
+==22382== Profiling result:
+==22382== Event result:
+Invocations                                Event Name         Min         Max         Avg       Total
+Device "NVIDIA Tegra X2 (0)"
+    Kernel: find_hash(int, int)
+          1              l2_subp0_write_sector_misses      152762      152762      152762      152762
+          1              l2_subp1_write_sector_misses      141207      141207      141207      141207
+          1               l2_subp0_read_sector_misses       10440       10440       10440       10440
+          1               l2_subp1_read_sector_misses        2911        2911        2911        2911
+          1          l2_subp0_read_tex_sector_queries      374412      374412      374412      374412
+          1          l2_subp1_read_tex_sector_queries      370792      370792      370792      370792
+          1         l2_subp0_write_tex_sector_queries      646885      646885      646885      646885
+          1         l2_subp1_write_tex_sector_queries      625508      625508      625508      625508
+          1             l2_subp0_read_tex_hit_sectors      368530      368530      368530      368530
+          1             l2_subp1_read_tex_hit_sectors      365508      365508      365508      365508
+          1            l2_subp0_write_tex_hit_sectors      642613      642613      642613      642613
+          1            l2_subp1_write_tex_hit_sectors       26376       26376       26376       26376
+          1        l2_subp0_total_read_sector_queries      380420      380420      380420      380420
+          1        l2_subp1_total_read_sector_queries      371440      371440      371440      371440
+          1       l2_subp0_total_write_sector_queries      662553      662553      662553      662553
+          1       l2_subp1_total_write_sector_queries      642414      642414      642414      642414
+          1                         elapsed_cycles_sm     2435986     2435986     2435986     2435986
+          1                              generic_load       74464       74464       74464       74464
+          1                             generic_store       45824       45824       45824       45824
+          1                               global_load        1496        1496        1496        1496
+          1                              global_store          33          33          33          33
+          1                                local_load       89504       89504       89504       89504
+          1                               local_store      139372      139372      139372      139372

@@ -1,0 +1,31 @@
+==4482== NVPROF is profiling process 4482, command: ./0123HomeWork 1 1
+==4482== Some kernel(s) will be replayed on device 0 in order to collect all events/metrics.
+==4482== Profiling application: ./0123HomeWork 1 1
+==4482== Profiling result:
+==4482== Event result:
+Invocations                                Event Name         Min         Max         Avg       Total
+Device "NVIDIA Tegra X2 (0)"
+    Kernel: find_hash(int, int)
+          1              l2_subp0_write_sector_misses          38          38          38          38
+          1              l2_subp1_write_sector_misses           0           0           0           0
+          1               l2_subp0_read_sector_misses    11181932    11181932    11181932    11181932
+          1               l2_subp1_read_sector_misses           0           0           0           0
+          1          l2_subp0_read_tex_sector_queries    19507865    19507865    19507865    19507865
+          1          l2_subp1_read_tex_sector_queries    13581432    13581432    13581432    13581432
+          1         l2_subp0_write_tex_sector_queries    27656826    27656826    27656826    27656826
+          1         l2_subp1_write_tex_sector_queries    28150635    28150635    28150635    28150635
+          1             l2_subp0_read_tex_hit_sectors    15309923    15309923    15309923    15309923
+          1             l2_subp1_read_tex_hit_sectors    17532338    17532338    17532338    17532338
+          1            l2_subp0_write_tex_hit_sectors    32101591    32101591    32101591    32101591
+          1            l2_subp1_write_tex_hit_sectors    23705789    23705789    23705789    23705789
+          1        l2_subp0_total_read_sector_queries    26356514    26356514    26356514    26356514
+          1        l2_subp1_total_read_sector_queries    17779616    17779616    17779616    17779616
+          1       l2_subp0_total_write_sector_queries    27656788    27656788    27656788    27656788
+          1       l2_subp1_total_write_sector_queries    28150622    28150622    28150622    28150622
+          1                              generic_load    12840620    12840620    12840620    12840620
+          1                             generic_store     7901920     7901920     7901920     7901920
+          1                               global_load      246936      246936      246936      246936
+          1                              global_store          33          33          33          33
+          1                                local_load    15803872    15803872    15803872    15803872
+          1                               local_store    24199667    24199667    24199667    24199667
+==4482== Warning: One or more events or metrics overflowed. Rerun with "--print-gpu-trace" for detail.
