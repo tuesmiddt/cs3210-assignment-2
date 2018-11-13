@@ -1,0 +1,35 @@
+==85134== NVPROF is profiling process 85134, command: ./0123HomeWork 2 2
+==85134== Some kernel(s) will be replayed on device 0 in order to collect all events/metrics.
+==85134== Profiling application: ./0123HomeWork 2 2
+==85134== Profiling result:
+==85134== Event result:
+Invocations                                Event Name         Min         Max         Avg       Total
+Device "Tesla V100-PCIE-16GB (0)"
+    Kernel: find_hash(int, int)
+          1                     fb_subp0_read_sectors           0           0           0           0
+          1                     fb_subp1_read_sectors           0           0           0           0
+          1                    fb_subp0_write_sectors         100         100         100         100
+          1                    fb_subp1_write_sectors         392         392         392         392
+          1              l2_subp0_write_sector_misses         123         123         123         123
+          1              l2_subp1_write_sector_misses         127         127         127         127
+          1               l2_subp0_read_sector_misses           0           0           0           0
+          1               l2_subp1_read_sector_misses           4           4           4           4
+          1          l2_subp0_read_tex_sector_queries     8303085     8303085     8303085     8303085
+          1          l2_subp1_read_tex_sector_queries    10609915    10609915    10609915    10609915
+          1         l2_subp0_write_tex_sector_queries   500604830   500604830   500604830   500604830
+          1         l2_subp1_write_tex_sector_queries   501752083   501752083   501752083   501752083
+          1             l2_subp0_read_tex_hit_sectors     7078571     7078571     7078571     7078571
+          1             l2_subp1_read_tex_hit_sectors    11797605    11797605    11797605    11797605
+          1            l2_subp0_write_tex_hit_sectors   511826937   511826937   511826937   511826937
+          1            l2_subp1_write_tex_hit_sectors   488839811   488839811   488839811   488839811
+          1        l2_subp0_total_read_sector_queries     7328844     7328844     7328844     7328844
+          1        l2_subp1_total_read_sector_queries    12050879    12050879    12050879    12050879
+          1       l2_subp0_total_write_sector_queries   511704928   511704928   511704928   511704928
+          1       l2_subp1_total_write_sector_queries   488728834   488728834   488728834   488728834
+          1                              generic_load   122794828   122794828   122794828   122794828
+          1                             generic_store   802889260   802889260   802889260   802889260
+          1                               global_load     2361441     2361441     2361441     2361441
+          1                              global_store          33          33          33          33
+          1                                local_load   302607136   302607136   302607136   302607136
+          1                               local_store   198586016   198586016   198586016   198586016
+==85134== Warning: One or more events or metrics overflowed. Rerun with "--print-gpu-trace" for detail.
