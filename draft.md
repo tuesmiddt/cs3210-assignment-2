@@ -28,9 +28,11 @@
 # Performance (Jetson)
 
 - Main bottleneck is memory dependency
-- Spike in write misses when running 32/64 blocks.
-- Spike in write misses when running > 1024 total threads.
-  - Conjecture: 0 cost context switch assumption breaks down. Not all threads mapped to a SM can have execution state maintained in registers.
+- Spike in cache misses when running 32/64 blocks.
+  - Thrashing?
+- Spike in cache misses when running > 1024 total threads.
+  - Not enough cache?
+  - Thrashing?
 - In general, fewer read misses with more total threads. Significant drop when there are at least 32 threads in a block.
 - Consider cache misses vs run time for saturated cases (2 or more blocks, 256 or more total threads):
   - Write misses unrelated to time.
