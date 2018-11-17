@@ -29,8 +29,8 @@ rm ./*.in
 for i in $(seq 48 -1 46);
 do
     touch $i.in;
-    echo $PREVIOUS > $i.in;
-    echo $((2 ** $i)) > $i.in;
+    echo $PREVIOUS >> $i.in;
+    echo $((2 ** $i)) >> $i.in;
     
     for run in $(seq 1 10);
     do
