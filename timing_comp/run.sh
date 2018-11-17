@@ -26,7 +26,7 @@ cp ../openmp/$OMP_BIN .
 
 rm ./*.in
 
-for i in $(seq 48 -1 46);
+for i in $(seq 48 -1 20);
 do
     touch $i.in;
     echo $PREVIOUS >> $i.in;
