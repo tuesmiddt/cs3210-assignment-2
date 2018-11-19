@@ -141,6 +141,7 @@ The program was run on the Jetson TX2 with blocks-per-grid values between 1 and 
   \label{figure:jetson-saturated}
 \end{center}
 
+\newpage
 \subsection{Kernel Performance on XGPC}
 The program was run on the Jetson TX2 with blocks-per-grid values between 1 and 80 and threads-per-block values between 1 and 256.
 
@@ -190,24 +191,24 @@ The experiments on the Jetson TX2 demonstrate the powerful ability of the GPU to
 Due to the extremely fast memory on the Tesla GPU, tests on the XGPC node were mostly bottlenecked by execution dependencies (Table \ref{table:stall}). Memory access was the cause for only 17.56\% of stalls. As a result, the best speedup was achieved when the program spawned exactly one thread for each CUDA core. Scheduling additional threads actually has a negligible impact on performance (Table \ref{table:stall} and Figure \ref{figure:xgpctime}).
 
 \begin{center}
-  \begin{tabular}{l | r r r}
-    Node & Serial/$ms$ & Parallel(best)/$ms$ &	Speedup \\ \hline
-    Jetson & 1747.5 & 5.51 & 317.19 \\
-    XGPC & 618.12 & 0.11 & 5699.89 \\
+  \begin{tabular}{l | r r | r | r r}
+    Node& Serial/$ms$ & Parallel(best)/$ms$ &	Speedup & num\_blocks & num\_threads/block \\ \hline
+    Jetson (256 cores) & 1747.5 & 5.51 & 317.19 & 32 & 32 \\
+    XGPC (5120 cores) & 618.12 & 0.11 & 5699.89 & 80 & 64 \\
   \end{tabular}
-  \captionof{table}{Comparison of serial and best parallel execution time.}
+  \captionof{table}{Comparison of serial and best parallel execution time}
   \label{table:speedupcomp}
 \end{center}
 
-When considering the overall performance on the Jetson and XGPC, we can see that the Tesla GPU in the XGPC is significantly more powerful than the Jetson in both serial and parallel workloads (Table \ref{table:speedupcomp}).
+When considering the overall performance on the Jetson and XGPC, we can see that the Tesla GPU in the XGPC is significantly more powerful than the Jetson in both serial and parallel workloads (Table \ref{table:speedupcomp}). Do take note that the speedup is actually more than the number of CUDA cores available. Our hypothesis is that this is because the GPU can hide memory latency by scheduling other warps during execution, which is not possible for serial execution.
 
 \section{Performance Comparison with OpenMP implementation}
 
 In this section, we shall compare the performance of our CUDA application with an alternative multi-threaded CPU OpenMP implementation.
 
-The OpenMP implementation closely follows the design of the CUDA application. The primary difference is that the kernel code is wrapped in an \mintinline{C}{#pragma omp parallel} block. The storing of the result is protected by a \mintinline{C}{#pragma omp critical} block.
+The OpenMP implementation closely follows the design of the CUDA application. The primary difference is that the kernel code is wrapped in an \mintinline{C}{#pragma omp parallel} block. The storing of the result is protected by a \mintinline{C}{#pragma omp critical} block to prevent race condition.
 
-The following tests were executed on a compute cluster node (XGPC6). The OpenMP implementation was executed with 32 threads, matching the number of CPU threads on the machine. The CUDA implementation was executed with 80 blocks per gird and 64 threads per block, following the result of the previous section. Both implementations were run for target values between $2^{30}$ and $2^{48}$.
+The following tests were executed on a compute cluster node (XGPC6). The OpenMP implementation was executed with 32 threads, matching the number of CPU threads on the machine. The CUDA implementation was executed with 80 blocks per grid and 64 threads per block, following the result of the previous section. Both implementations were run for target values between $2^{30}$ and $2^{48}$.
 
 \begin{center}
   \includegraphics[width=\linewidth]{cuda-vs-openmp}
