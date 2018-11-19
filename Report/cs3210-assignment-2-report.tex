@@ -111,9 +111,9 @@ Various tests were run on the SoC compute cluster(XGPC) and the Jetson TX2 modul
 
 \section{Kernel Performance}
 
-In this section, we shall discuss the performance of the CUDA kernel. All values reported are 10-run averages. Target exponent of $2^{48}$ is used so as to not overflow the hardware counters when running \texttt{nvprof}.\\
+In this section, we shall discuss the performance of the CUDA kernel. All values reported are 10-run averages. Target value of $2^{48}$ is used so as to not overflow the hardware counters when running \texttt{nvprof}.\\
 \\
-\textit{Note:} The following analysis does not consider the fixed overhead of copying input parameters from host to device and subsequent retrieval of result value. This is discussed in the next section.
+\textit{Note:} The following analysis does not consider the fixed overhead of copying input parameters from host to device and subsequent retrieval of result value. This will be discussed in the next section.
 
 \subsection{Kernel Performance on Jetson TX2}
 
@@ -183,7 +183,7 @@ We observe from the results above that in general, the program becomes faster wh
 \begin{itemize}
   \item Each block can only be executed by a single SM. Therefore, the program performs better when the number of blocks is at least equal to the number of available SMs.
   \item The number of threads per block should be at least equal to the number of CUDA cores on each SM to ensure that all CUDA cores are utilised.
-  \item Performance continues to improve even as the number of threads per block exceeds the number of CUDA cores available on each SM. This is because the GPU can hide memory latency when there are extra schedulable warps by executing an alterative warp when the currently active warp is waiting for a memory operation. The large number of registers on the GPU allows it to maintain the execution state of multiple threads at once and thus perform very low cost "context switches". This behaviour is most noticeable on the Jetson TX2 because $49.98\%$ of stalls are due to memory dependency (Table \ref{table:stall}).
+  \item Performance continues to improve even as the number of threads per block exceeds the number of CUDA cores available on each SM. This is because the GPU can hide memory latency when there are extra schedulable warps by executing an alterative warp when the currently active warp is waiting for a memory operation. The large number of registers on the GPU allows it to maintain the execution state of multiple threads at once and thus perform very low cost ``context switches''. This behaviour is most noticeable on the Jetson TX2 because $49.98\%$ of stalls are due to memory dependency (Table \ref{table:stall}).
 \end{itemize}
 
 The experiments on the Jetson TX2 demonstrate the powerful ability of the GPU to hide memory latency. When considering the test cases where there are at least 2 blocks and 256 total threads, we can see that there is little correlation between read misses and execution time (Figure \ref{figure:jetsonreadmiss}). It is more important to ensure that there is a large number of schedulable threads so that the GPU can hide memory latencies effectively (Figure \ref{figure:jetson-saturated}).
@@ -200,7 +200,7 @@ Due to the extremely fast memory on the Tesla GPU, tests on the XGPC node were m
   \label{table:speedupcomp}
 \end{center}
 
-When considering the overall performance on the Jetson and XGPC, we can see that the Tesla GPU in the XGPC is significantly more powerful than the Jetson in both serial and parallel workloads (Table \ref{table:speedupcomp}). Do take note that the speedup is actually more than the number of CUDA cores available. Our hypothesis is that this is because the GPU can hide memory latency by scheduling other warps during execution, which is not possible for serial execution.
+When considering the overall performance on the Jetson and XGPC, we can see that the Tesla GPU in the XGPC is significantly more powerful than the Jetson in both serial and parallel workloads (Table \ref{table:speedupcomp}). Do take note that the speedup is actually more than the number of CUDA cores available. This is likely because the GPU is optimised for parallel workloads at the hardware and firmware levels.
 
 \section{Performance Comparison with OpenMP implementation}
 
