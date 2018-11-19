@@ -111,7 +111,7 @@ Various tests were run on the SoC compute cluster(XGPC) and the Jetson TX2 modul
 
 \section{Kernel Performance}
 
-In this section, we shall discuss the performance of the CUDA kernel. All values reported are 10-run averages. Target exponent of $2^{48}$ is used to as to not overflow the hardware counters when running \texttt{nvprof}.\\
+In this section, we shall discuss the performance of the CUDA kernel. All values reported are 10-run averages. Target exponent of $2^{48}$ is used so as to not overflow the hardware counters when running \texttt{nvprof}.\\
 \\
 \textit{Note:} The following analysis does not consider the fixed overhead of copying input parameters from host to device and subsequent retrieval of result value. This is discussed in the next section.
 
@@ -138,6 +138,7 @@ The program was run on the Jetson TX2 with blocks-per-grid values between 1 and 
 \begin{center}
   \includegraphics[width=\linewidth]{jetson-saturated}
   \captionof{figure}{Scatter graph of time taken against total threads when $>=256$ total threads are scheduled}
+  \label{figure:jetson-saturated}
 \end{center}
 
 \subsection{Kernel Performance on XGPC}
@@ -184,9 +185,21 @@ We observe from the results above that in general, the program becomes faster wh
   \item Performance continues to improve even as the number of threads per block exceeds the number of CUDA cores available on each SM. This is because the GPU can hide memory latency when there are extra schedulable warps by executing an alterative warp when the currently active warp is waiting for a memory operation. The large number of registers on the GPU allows it to maintain the execution state of multiple threads at once and thus perform very low cost "context switches". This behaviour is most noticeable on the Jetson TX2 because $49.98\%$ of stalls are due to memory dependency (Table \ref{table:stall}).
 \end{itemize}
 
-The experiments on the Jetson TX2 demonstrate the powerful ability of the GPU to hide memory latency. When considering the test cases where there are at least 2 blocks and 256 total threads, we can see that there is little correlation between read misses and execution time (Figure \ref{figure:jetsonreadmiss}). It is more important to ensure that there is a large number of schedulable threads so that the GPU can hide memory latencies effectively.
+The experiments on the Jetson TX2 demonstrate the powerful ability of the GPU to hide memory latency. When considering the test cases where there are at least 2 blocks and 256 total threads, we can see that there is little correlation between read misses and execution time (Figure \ref{figure:jetsonreadmiss}). It is more important to ensure that there is a large number of schedulable threads so that the GPU can hide memory latencies effectively (Figure \ref{figure:jetson-saturated}).
 
 Due to the extremely fast memory on the Tesla GPU, tests on the XGPC node were mostly bottlenecked by execution dependencies (Table \ref{table:stall}). Memory access was the cause for only 17.56\% of stalls. As a result, the best speedup was achieved when the program spawned exactly one thread for each CUDA core. Scheduling additional threads actually has a negligible impact on performance (Table \ref{table:stall} and Figure \ref{figure:xgpctime}).
+
+\begin{center}
+  \begin{tabular}{l | r r r}
+    Node & Serial/$ms$ & Parallel(best)/$ms$ &	Speedup \\ \hline
+    Jetson & 1747.5 & 5.51 & 317.19 \\
+    XGPC & 618.12 & 0.11 & 5699.89 \\
+  \end{tabular}
+  \captionof{table}{Comparison of serial and best parallel execution time.}
+  \label{table:speedupcomp}
+\end{center}
+
+When considering the overall performance on the Jetson and XGPC, we can see that the Tesla GPU in the XGPC is significantly more powerful than the Jetson in both serial and parallel workloads (Table \ref{table:speedupcomp}).
 
 \section{Performance Comparison with OpenMP implementation}
 
