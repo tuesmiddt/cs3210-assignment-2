@@ -23,7 +23,7 @@
 \maketitle
 
 \section{Program Design}
-The program is implemented in Cuda. The goal is to achieve the best possible speedup. Primary design considerations are:
+The program is implemented in CUDA. The goal is to achieve the best possible speedup. Primary design considerations are:
 \begin{itemize}
   \item Ensure maximum utilisation of computation resources.
   \item Minimise overhead as much as possible.
@@ -70,7 +70,7 @@ The program is implemented in Cuda. The goal is to achieve the best possible spe
   \end{itemize}
   \item Input values (timestamp, target, previous hash) are stored in constant memory since they are only read, not written to.
   \item A test and set operation \mintinline{C}{atomicExch} is used when a valid nonce is found to ensure that only one thread writes to output buffer.
-  \item The completion flag must to be marked as \mintinline{C}{volatile} ensure that Unified Memory optimisations do not cause the variable to be migrated into shared/local memory.
+  \item The completion flag must be marked as \mintinline{C}{volatile} to ensure that Unified Memory optimisations do not cause the variable to be migrated into register/shared/local memory but instead read from the global memory.
   \item Due to the avalanche effect in SHA256, the program searches for valid nonces incrementally starting from 0 for simplicity.
 \end{itemize}
 
@@ -126,9 +126,15 @@ SPEEDUP GRAPH
 \subsection{Kernel Performance on XGPC}
 The program was run on the Jetson TX2 with blocks-per-grid values between 1 and 80 and threads-per-block values between 1 and 256.
 
-TIME GRAPH
+\begin{center}
+  \includegraphics[width=\linewidth]{xgpc-time}
+  \captionof{figure}{Scatter graph of time taken against total threads in grid}
+\end{center}
 
-SPEEDUP GRAPH
+\begin{center}
+  \includegraphics[width=\linewidth]{xgpc-speedup}
+  \captionof{figure}{Scatter graph of speedup achieved on XGPC as number of threads increases}
+\end{center}
 
 \subsection{Discussion}
 We observe from the results above that in general, the program becomes faster when the number of total threads increases. This trend can be attributed to the following reasons:
